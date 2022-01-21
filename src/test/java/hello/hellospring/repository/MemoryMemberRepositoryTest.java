@@ -1,6 +1,7 @@
 package hello.hellospring.repository;
 
 import hello.hellospring.domain.Member;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -10,6 +11,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class MemoryMemberRepositoryTest {
 
     MemoryMemberRepository repository = new MemoryMemberRepository();
+
+    /*
+    - 테스트코드 실행 시 순서가 보장되지 않음
+      findByName() 함수 실행 시 에러가 났던 이유는
+      이전에 실행한 코드에서 쓰였던 데이터가 저장소에 남아있기 때문
+      그래서 함수 실행이 끝날 때마다 저장소에 있는 데이터를 비워줘야 함
+    */
+
+    /* 테스트끼리는 의존관계가 없어야 한다 */
+
+    @AfterEach //하나의 테스트가 끝난 뒤 실행
+    public void afterEach() {
+        repository.clearStore();
+    }
 
     @Test
     public void save() {
