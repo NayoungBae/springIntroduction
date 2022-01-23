@@ -37,14 +37,13 @@ class MemberServiceTest {
 
         //when
         memberService.join(member1);
-        try {
-            memberService.join(member2);
-            fail("예외가 발생해야 합니다.");
-        } catch(IllegalStateException e) {
-            assertEquals(e.getMessage(), "이미 존재하는 회원입니다.");
-        }
+        //이 로직 실핼 시 이런 에러를 기대한다
+        IllegalStateException e = assertThrows(IllegalStateException.class,
+                                                () -> memberService.join(member2));
 
         //then
+        //메시지 검증
+        assertEquals(e.getMessage(), "이미 존재하는 회원입니다.");
     }
 
     @Test
